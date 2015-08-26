@@ -1,36 +1,42 @@
-# ES6 AutoCompile
+# ES6 AutoCompile for Brackets
 
-ES6 AutoCompile is an extension for the [Brackets editor](https://github.com/adobe/brackets) that adds automatic compilation of ES6 files to ES5 upon saving.
+ES6 AutoCompile is an extension for the [Brackets editor](https://github.com/adobe/brackets)
+that adds automatic compilation of ES6 files to ES5 upon saving.
 
-### What it does:
-
-- Tell brackets that ``*.es6`` are javascript code
-- Compile ``*.es6`` files into ``*.js`` (ES5) files upon saving
-- Report any compile error in the bottom panel, with the line number
-
-**Warning:** Due to ``*.es6`` files being recognized as javascript, JSLint will likely fire warnings/errors when editing those.
-I chose not to define a separate language for ES6, which I think would lead to issues and misunderstandings.
+**Note:** ES6 Autocompile also tells Brackets to treat ``*.es6`` and``*.ec6`` files as javascript source.
+This enables syntax highlighting for those files, but also triggers built-in JSLint-ing, which is rather inadequate
+for ES6 source (that is, without the proper options).
 
 
 ## Usage
 
-ES6 AutoCompile will automatically process any ``*.es6`` file upon saving.
+Upon saving, ES6 AutoCompile will automatically process any javascript file:
+
+- whose name ends with ``.es6``, ``.ec6``, ``.es6.js`` or ``.ec6.js``
+- whose exact first line is: ``// !ES6``
+
+and produce an ES5 file ending with ``.js`` (or ``.es5.js``) with the same basename and path.
 
 ### Installation
 
-ES6 AutoCompile is installed from the *Brackets Extension Manager*. Please restart Brackets after installing the extension.
+ES6 AutoCompile is installed from the *Brackets Extension Manager*.
 
-### Compile options
+Alternatively, you can download it from the [Brackets Extension Registry](https://brackets-registry.aboutweb.com/)
+and unzip it in your extensions folder.
+
+Please restart Brackets after installation.
+
+### Options
+
+#### Custom paths
 
 *Not supported yet*
-
 
 ## Todo
 
 - Provide working examples
-- Allow for more file extensions for ES6 sources
-- Allow specifying destination paths for generated files
-- Have JSLint run with the ``es6`` option on ES6 code
+- Allow specifying destination paths for generated files (perhaps with regex-based rewrite rules)
+- Have JSLint run with the ``es6`` option on ES6 code (or not at all)
 - Provide source maps
 - Display more helpful error messages
 

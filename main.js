@@ -84,17 +84,18 @@ define(function (require, exports, module) {
   function compileAll(compiler, files) {
     // compiler.compile(file) each file and combine into a single deferred
     return $.when.apply($, files.map(function (file) {
-      return compiler.compile(file);
+      return compiler.compile(file.src, file.dst);
     }));
   }
 
-  function compileES6(contents, documentPath) {
+  function compileES6(contents, srcFilePath) {
     var deferred = new $.Deferred();
+    var dstFilePath = getDstFilenameIfShouldCompile(contents, srcFilePath);
     
-    // process only if extension is es6
-    if (DocumentManager.getCurrentDocument().file.name.split('.').pop() === 'es6') {
-      var connection = connectToNodeModule('ES6Compiler'),
-        files = [documentPath];//loadFilesToCompile(documentPath);
+    // should compile if dstFilePath not null
+    if (dstFilePath !== null) {
+      var connection = connectToNodeModule('ES6Compiler');
+      var files = [{src:srcFilePath, dst:dstFilePath}];//loadFilesToCompile(srcFilePath);
         
       // connect to the node server & read the file
       $.when(connection, files).then(function (compiler, files) {
@@ -113,18 +114,46 @@ define(function (require, exports, module) {
 
     return deferred.promise();
   }
+    
+  
+  // This function tests whether the file should be compiled
+  // if so, it returns a path to be used for the destination file
+  // if not, it returns null
+  function getDstFilenameIfShouldCompile(content, filepath) {
+    // Test for matching extensions in filepath
+  
+    var inputExts = [".es6", ".ec6", ".es6.js", ".ec6.js"];
+    
+    var matchingExts = inputExts.filter(function(ext) {
+        return filepath.substr(-ext.length) === ext;
+      });
+    
+    if (matchingExts.length > 0) // if does match, replace extension with ".js"
+      return filepath.slice(0, -matchingExts[0].length) + ".js";
+      
+    // Test for magic tag in contents
+    
+    var firstLine = content.substr(0, content.indexOf('\n')).trim();
+    
+    if (/^\s*\/\/\s*\!ES6\s*$/.test(firstLine)) {
+      var exploded = filepath.split(".");
+      
+      if (exploded.length > 1) { // if the file has an extension, add ".es5" before
+        exploded.splice(-1, 0, "es5");
+        return exploded.join(".");
+      } else { // if not, just append ".es5.js" to the path
+        return filepath + ".es5.js";
+      }
+    }
+    
+    // All is lost
+    
+    return null;
+  }
   
   
-  // define a new language
-//  LanguageManager.defineLanguage("es6", {
-//      name: "EcmaScript 6",
-//      mode: "javascript",
-//      fileExtensions: ["es6"],
-//      blockComment: ["/*", "*/"],
-//      lineComment: ["//"]
-//  });
-
   LanguageManager.getLanguage("javascript").addFileExtension("es6");
+  LanguageManager.getLanguage("javascript").addFileExtension("ec6");
 
   // Register for es6 files
   CodeInspection.register('javascript', {
@@ -134,7 +163,7 @@ define(function (require, exports, module) {
 
   // Register for documentSaved events to support inline-editors
   $(DocumentManager).on('documentSaved', function (event, document) {
-    if (DocumentManager.getCurrentDocument().file.name.split('.').pop() === 'es6') {
+    if (EditorManager.getCurrentFullEditor().document !== document && document.getLanguage().getId() === 'javascript') {
       compileES6(document.getText(), document.file.fullPath);
     }
   });
