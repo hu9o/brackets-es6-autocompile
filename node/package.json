@@ -1,0 +1,9 @@
+{
+  "name": "brackets-es6-autocompile.node",
+  "version": "1.0.0",
+  "description": "Node script for brackets-es6-autocompile",
+  "dependencies": {
+    "babel": "^5.8.21",
+    "mkpath": "^0.1.0"
+  }
+}

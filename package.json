@@ -1,0 +1,24 @@
+{
+  "name": "brackets-es6-autocompile",
+  "title": "ES6 to ES5 AutoCompile (babeljs)",
+  "description": "Automatically compiles ES6 code to ES5 upon saving.",
+  "homepage": "https://github.com/hu9o/brackets-es6-autocompile",
+  "version": "1.0",
+  "author": {
+    "name": "Hugo Ratiney",
+    "url": "https://github.com/hu9o"
+  },
+  "contributors": [
+    "Jonathan Diehl (https://github.com/jdiehl)",
+    "James Lawrence (https://github.com/jlaw90)",
+    "Martin Zagora (https://github.com/zaggino)",
+    "Dimitar S. (https://github.com/deemeetar)",
+    "Fez Vrasta (https://github.com/FezVrasta)",
+    "Kenneth Ruddick (https://github.com/KenRud)",
+    "Florian Fida (https://github.com/piccaso)"
+  ],
+  "license": "MIT",
+  "engines": {
+    "brackets": ">=0.31.0"
+  }
+}
