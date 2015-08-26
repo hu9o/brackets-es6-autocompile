@@ -3,7 +3,7 @@
   "title": "ES6 to ES5 AutoCompile (babeljs)",
   "description": "Automatically compiles ES6 code to ES5 upon saving.",
   "homepage": "https://github.com/hu9o/brackets-es6-autocompile",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": {
     "name": "Hugo Ratiney",
     "url": "https://github.com/hu9o"
